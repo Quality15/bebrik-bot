@@ -14,7 +14,7 @@ client = commands.Bot(command_prefix=prefix)
 client.remove_command('help')
 
 @client.event
-async def on_ready():
+async def on_ready(): # When bot is run
     print(f'Bot connected as {client.user}')
     await client.change_presence(status = discord.Status.online, activity = discord.Game('я вернулся'))
 
@@ -68,17 +68,17 @@ async def on_message(message):
     await client.process_commands(message)
 
 @client.command(pass_context=True)
-async def w(ctx):
+async def w(ctx): # Command that say 'Hi'
     await ctx.send(embed = discord.Embed(description=f'Усім привіт!'))
 
 @client.command(pass_context=True)
-async def say(ctx):
+async def say(ctx): # Saying message from console
     await ctx.message.delete()
     msg = input('Here: ')
     await ctx.send(msg)
 
 @client.command(pass_context=True)
-async def help(ctx, arg=None):
+async def help(ctx, arg=None): # Command navigation
     emb = discord.Embed(title=f'Навігація по командам', description=f'*Префікс бота - **`***', color = 0x9059ff)
 
     # Commands list
@@ -89,16 +89,16 @@ async def help(ctx, arg=None):
     await ctx.send(embed = emb)
 
 @client.command(pass_context=True, aliases = ['бебра', 'бєбра'])
-async def bebra(ctx):
+async def bebra(ctx): # Sending random GIF
     try:
         await ctx.send(random.choice(gifs_list))
     except Exception as e:
         await ctx.send(f'{e}')
 
 @client.command(pass_context=True, aliases = ['os', 'mem', 'memory', 'cpu'])
-async def ping(ctx):
+async def ping(ctx): # System information about bot's server (CPU, Memory, OS)
     battery = psutil.sensors_battery()
-    percentbat = int(battery.percent)
+    # percentbat = int(battery.percent)
     os_system = platform.system()
     os_release = platform.release()
     CPU = psutil.cpu_percent()
