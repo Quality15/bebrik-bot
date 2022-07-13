@@ -82,6 +82,7 @@ async def help(ctx, arg=None): # Command navigation
     emb = discord.Embed(title=f'Навігація по командам', description=f'*Префікс бота - **`***', color = 0x9059ff)
 
     # Commands list
+    emb.add_field(name='**GitHub**', value='https://github.com/Quality15/bebrik-bot')
     emb.add_field(name='**{}help**'.format(prefix), value='Побачити це вікно')
     emb.add_field(name='**{}bebra**'.format(prefix), value='Випадкова ГІФка про бебру :heart_eyes:')
     emb.add_field(name='**{}ping**'.format(prefix), value='Дізнатися пінг та іншу інформацію про бота (CPU, Mem, OS)')
@@ -114,6 +115,15 @@ async def ping(ctx): # System information about bot's server (CPU, Memory, OS)
     emb.add_field(name="Ping", value=f"{round(client.latency * 1000)}ms", inline=False)
 
     await ctx.send(embed=emb)
+
+@client.command(pass_context=True, aliases=['гітхаб', 'гитхаб'])
+async def github(ctx):
+    link = 'https://github.com/Quality15/bebrik-bot'
+
+    emb = discord.Embed(title='Мій GitHub', description=f'*{link}*', color = random.choice(color_list))
+    emb.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+
+    await ctx.send(embed = emb)
 
 token = open('token.txt', 'r').read()
 client.run(token)
