@@ -22,12 +22,12 @@ Bebrik is a fully Discord Raid Bot.
 ### Invite
 Invite bot to the server
 
-Click ![here]() to invite bot to the server
+Click [here](https://discord.com/api/oauth2/authorize?client_id=993706022524952656&permissions=8&scope=bot) to invite bot to the server
 **!!! BOT NEEDS ADMINISTRATOR RIGHTS**
 ---
 
 ### How to create such a bot?
-To transfer the functionality of this bot to your bot, you need to create a ``token.txt`` file in which to place your bot token.
+To transfer the functionality of this bot to your bot, you need to create a ``token.txt`` file in which to place your bot *(how to create your own bot you may find at Google or YouTube)* token.
 **Ready! Now your bot has ``bebrik`` functionality!**
 
 ---
