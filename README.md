@@ -24,6 +24,11 @@ Invite bot to the server
 
 Click ![here]() to invite bot to the server
 **!!! BOT NEEDS ADMINISTRATOR RIGHTS**
+---
+
+### How to create such a bot?
+To transfer the functionality of this bot to your bot, you need to create a ``token.txt`` file in which to place your bot token.
+**Ready! Now your bot has ``bebrik`` functionality!**
 
 ---
 
